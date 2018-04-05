@@ -1,5 +1,5 @@
-# TFRResponseLogger
-LimeSurvey plugin, using events beforeSurveyPage and beforeLoadResponse
+# TFRResponseLogger LimeSurvey plugin
+LimeSurvey plugin by toolsforresearch.com, using the events beforeSurveyPage and beforeLoadResponse
 
 **Purpose**<br />
 This plugin for LimeSurvey enables survey administrators and/or database administrators to log the actions of the respondents to selected surveys. After enabling the plugin for a survey, it logs the following:
@@ -23,7 +23,12 @@ The plugin has the following global configuration options:
 1. Use load response logger by default. Default is 'No'.
 2. Store logs in response_log table by default. Default is 'No'. Change this and the previous option to 'Yes' if you want to enable logging for all surveys in a database table.
 3. Store logs in Response Log 'survey' by default. Default is 'No'. We do not advise you to change this to 'Yes', because an awful lot will be logged and LimeSurvey's user interface is not very good in displaying large text fields with a dumped array as content.
-4. Survey ID of the Response Log 'survey'. Default is 999999, but you change the logging survey ID globally if 999999 is already taken. If you plan to use the type of logging, create and activate a Response Log survey with the configured ID right now. Use the lsa or lss in the toolsforresearch/TFRResponseLogger github repo to do that.
+4. Survey ID of the Response Log 'survey'. Default is 999999, but you can change the logging survey ID globally if 999999 is already taken. If you plan to use the type of logging, create and activate a Response Log survey with the configured ID right now. Use the lsa or lss in the toolsforresearch/TFRResponseLogger github repo to do that.
 5. Force load of single response by default. We disabled changing this option to 'Yes', because it overrides some of LimeSurvey's settings.
 
 All global configuration settings can be overridden on the survey level.
+
+**Configuration on the survey level**<br />
+In Survey properties > General settings & texts > Plugins you can adjust the plugin's behaviour per survey. Anything you specify here will override the global settings for the plugin. Special notes for some options:
+1. Changing the ID of the Response Log 'survey' might be useful if you want to separate the logs for respondent actions for various surveys. Possible reasons to do that are (a) do not mix respondent actions of more than one survey in a single log or (b) use different access rights for surveys that have restricted access as well. However, changing has a risk: be sure a Response Log survey with the chaged survey ID exists and is activated, before you change and save this option on a survey level.
+2. Force load of single response. Do not enable this unless you are absolutely sure and have tested it thoroughly. The effect of enabling: if the plugin finds only one response set for a token it forces LimeSurvey to use that response set, overriding any other LS settings that say otherwise. Example: if a participant has more than 1 'Uses left', LimeSurvey would normally create a new response record when the participant opens the 'newtest' link for the second time. Enabling this option for a survey would prevent a user from answering a survey for the second or third time in a row, despite the fact that 'Uses left' suggests otherwise. Do not use this in production! Testing only. Credits were they are due: we used a snippet from Sam Mousa's ResponsePicker Plugin to implement this option. See https://github.com/WorldHealthOrganization/ls-responsepicker
