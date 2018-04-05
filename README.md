@@ -1,11 +1,11 @@
 # TFRResponseLogger LimeSurvey plugin
-LimeSurvey plugin by toolsforresearch.com, using the events beforeSurveyPage and beforeLoadResponse
+LimeSurvey plugin by https://www.toolsforresearch.com, using the events beforeSurveyPage and beforeLoadResponse.
 
 **Purpose**<br />
 This plugin for LimeSurvey enables survey administrators and/or database administrators to log the actions of the respondents to selected surveys. After enabling the plugin for a survey, it logs the following:
 1. When a link to start or resume a survey was opened. Event: beforeSurveyPage in application/controllers/survey/index.php.
 2. If the survey already has answers for the requested token: how many response records exist for the token and what the answers in every response ID were. The plugin uses the event beforeLoadResponse (in application/controllers/survey/index.php) for logging the existing answers. LimeSurvey triggers this event once per session: at the initial loading of the survey. On subsequent actions the answers are retrieved from the \$\_SESSION variable.
-3. After any click on next/previous/submit the plugins logs (a) the array of loaded answers once again, this time extracted from the \$\_SESSION variable and (b) the response to the questions on the page that the respondent has just left. The response is a dump of the \$\_POST variable except the YII_CSRF_TOKEN and except \$\_POST[fieldnames], which is a huge array that cluttered the logging too much. Event: beforeSurveyPage in application/controllers/survey/index.php.
+3. After any click on next/previous/submit the plugins logs (a) the array of loaded answers once again, this time extracted from the \$\_SESSION variable and (b) the response to the questions on the page that the respondent has just left. The response is a dump of the \$\_POST variable except the YII_CSRF_TOKEN and except for \$\_POST['fieldnames'], which is a huge array that cluttered the logging too much. Event: beforeSurveyPage in application/controllers/survey/index.php.
 
 **Storage options**<br />
 The plugin offers 2 types of storage for the logs:
@@ -16,7 +16,7 @@ This type of storage is useful for survey administrators that have no access to 
 Both types of storage can be mixed. For instance, it is possible to enable table-logging for all surveys plus logging in separate Response Log surveys for just a few surveys at the same time.
 
 **Installation**<br />
-Installation of the plugin is like any other LimeSurvey plugin. Upload (or git clone) the plugin to a directory TFRResponseLogger in the plugin directory (directly under LimeSurvey's root directory). The plugin should be recognized automatically. If you activate the plugin it does not do anything yet. Beware: if you deactivate the plugin a response_log table is deleted if it exists.
+Installation of the plugin is like any other LimeSurvey plugin. Upload (or git clone) the plugin to a directory TFRResponseLogger in the plugin directory (directly under LimeSurvey's root directory). You will need FTP access to upload the plugin. The plugin should be recognized automatically. If you activate the plugin it does not do anything yet. Beware: if you deactivate the plugin a response_log table is deleted if it exists.
 
 **Global configuration**<br />
 The plugin has the following global configuration options:
@@ -30,5 +30,14 @@ All global configuration settings can be overridden on the survey level.
 
 **Configuration on the survey level**<br />
 In Survey properties > General settings & texts > Plugins you can adjust the plugin's behaviour per survey. Anything you specify here will override the global settings for the plugin. Special notes for some options:
-1. Changing the ID of the Response Log 'survey' might be useful if you want to separate the logs for respondent actions for various surveys. Possible reasons to do that are (a) do not mix respondent actions of more than one survey in a single log or (b) use different access rights for surveys that have restricted access as well. However, changing has a risk: be sure a Response Log survey with the chaged survey ID exists and is activated, before you change and save this option on a survey level.
-2. Force load of single response. Do not enable this unless you are absolutely sure and have tested it thoroughly. The effect of enabling: if the plugin finds only one response set for a token it forces LimeSurvey to use that response set, overriding any other LS settings that say otherwise. Example: if a participant has more than 1 'Uses left', LimeSurvey would normally create a new response record when the participant opens the 'newtest' link for the second time. Enabling this option for a survey would prevent a user from answering a survey for the second or third time in a row, despite the fact that 'Uses left' suggests otherwise. Do not use this in production! Testing only. Credits were they are due: we used a snippet from Sam Mousa's ResponsePicker Plugin to implement this option. See https://github.com/WorldHealthOrganization/ls-responsepicker
+1. Changing the ID of the Response Log 'survey' might be useful if you want to separate the logs for respondent actions for various surveys. Possible reasons to do that are (a) do not mix respondent actions of more than one survey in a single log or (b) use different access rights for surveys that have restricted access as well. However, changing has a risk: be sure a Response Log survey with the changed survey ID exists and is activated, before you change and save this option on a survey level.
+2. Force load of single response. Do not enable this unless you are absolutely sure and have tested it thoroughly. The effect of enabling: if the plugin finds only one response set for a token it forces LimeSurvey to use that response set, overriding any other LS settings that say otherwise. Example: if a participant has more than 1 'Uses left', LimeSurvey would normally create a new response record when the participant opens the 'newtest' link for the second time. Enabling this option for a survey would prevent a user from answering a survey for the second or third time in a row, despite the fact that 'Uses left' suggests otherwise. Do not use this in production! Testing only.<br />
+Credits where they are due: we used a snippet from Sam Mousa's ResponsePicker Plugin to implement this option. See https://github.com/WorldHealthOrganization/ls-responsepicker
+
+Do not forget to save the plugin settings after you have made changes on the survey level. The toggles in the plugin settings aren't 'autosave'.
+
+**Uninstallation**<br />
+The plugin can be uninstalled by deactivating it. At that moment it will delete the response_log table (if it exists) and remove it's settings from LimeSurvey's plugin_settings table. After deactivating the plugin you can simply delete the TFRResponseLogger directory from the plugin directory.
+
+**Authors & License**<br />
+This plugin was written by https://www.toolsforresearch.com, the company of Tammo ter Hark and Jan Ehrhardt. It was published on April 5, 2018, at https://github.com/toolsforresearch/TFRResponseLogger under the MIT License. The MIT License is a short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.

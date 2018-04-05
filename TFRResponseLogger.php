@@ -27,6 +27,8 @@
 			$sDBPrefix = Yii::app()->db->tablePrefix;
 			$sql = "DROP TABLE IF EXISTS {$sDBPrefix}response_log";
 			Yii::app()->db->createCommand($sql)->execute();
+			$sql = "DELETE FROM {$sDBPrefix}plugin_settings WHERE plugin_id = {$this->id}";
+			Yii::app()->db->createCommand($sql)->execute();
 		}
 
 		protected $settings = array(
