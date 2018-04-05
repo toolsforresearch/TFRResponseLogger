@@ -72,7 +72,7 @@
 					0 => 'No',
 				),
 				'default' => 0,
-				'label' => 'Do not force load of single response by default',
+				'label' => 'Force load of single response by default',
 				'help' => 'Only configurable in the Survey settings',
 			),
 		);
